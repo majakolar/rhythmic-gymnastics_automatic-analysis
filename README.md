@@ -1,6 +1,6 @@
-# Rhythmic Gymnastics AI Analysis Suite
+# Rhythmic Gymnastics Automatic Analysis Tool
 
-A comprehensive toolkit for automatic analysis and annotation of rhythmic gymnastics videos.
+Toolkit for automatic analysis and annotation of rhythmic gymnastics videos.
 
 ## Modules
 

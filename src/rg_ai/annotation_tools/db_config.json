@@ -1,0 +1,35 @@
+{
+    "movement_types": {
+        "Jump": {
+            "General": 0.5,
+            "Split Leap": 0.6,
+            "Stag Leap": 0.5,
+            "Cat Leap": 0.4,
+            "Switch Leap": 0.5,
+            "Ring Leap": 0.6,
+            "Tour Jeté": 0.5
+        },
+        "Balance": {
+            "General": 0.5,
+            "Scale": 0.6,
+            "Attitude": 0.5,
+            "Arabesque": 0.5,
+            "Ring": 0.6,
+            "Y-Scale": 0.6,
+            "Needle Scale": 0.6
+        },
+        "Rotation": {
+            "General": 0.4,
+            "General (2)": 0.4,
+            "General (3)": 0.5,
+            "General (4)": 0.6,
+            "General (5)": 0.7,
+            "Pivot": 0.4,
+            "Fouetté": 0.5,
+            "Pirouette": 0.5,
+            "Chainé": 0.4,
+            "Piqué Turn": 0.4,
+            "Illusion Turn": 0.5
+        }
+    }
+} 

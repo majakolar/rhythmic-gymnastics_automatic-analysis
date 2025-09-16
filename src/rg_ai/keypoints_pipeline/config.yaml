@@ -1,0 +1,164 @@
+action_head_classification_config:
+  batch_size: 4
+  class_weights_dict:
+    # Balance: 1.0
+    # Jump: 1.0
+    # Rotation: 1.0
+    # Other: 0.3
+  subsample_other: false
+  other_subsample_ratio: 0.1  # Keep 10% of "Other" files
+  subsample_seed: 42
+  confusion_matrix_folder: data/results/visualizations/confusion_matrices
+  drop_last: true
+  epochs: 20 # 20 before
+  experiment_name: ''
+  input_folder: '' #data/extracted/embeddings_3d/emb
+  join_labels: false
+  use_sublabels: true
+
+  use_consolidation: true
+  # Automatic consolidation of sublabels.
+  min_samples_threshold: 10 #Automatic consolidation of sublabels. Minimum samples to keep a sublabel separate. If 0, no sublabel consolidation will be done.
+  # Manual consolidation rules
+  sublabel_consolidation_rules:
+    Jump:
+      Stag_Leap: ["Stag_Leap", 'Turning_Stag_Leap']  # Join these rare sublabels
+      Split_Leap: ["Split_Leap", 'Turning_Split_Leap']
+    Balance:
+      Front_Split_-_Trunk_Backward: ["Front_Split_-_Trunk_Backward", 'Front_Split_-_Trunk_Backward_-_Below_Horizontal']
+    Rotation: 
+      Back_Split: ["Back_Split", 'Back_Split_-_Trunk_Horizontal']
+    # Balance:
+    #   GENERAL: ["Front_Split_-_Trunk_Backward_-_Below_Horizontal"] 
+  
+  # joined_label_dict (will be processed by consolidation):
+  joined_label_dict: {
+    'Other': 
+      ['GENERAL'], 
+    'Balance': 
+      ['Front_Split_-_Trunk_Backward', 
+      'GENERAL',
+      'Side_Split_-_Trunk_Horizontal',
+      'Back_Split_-_Trunk_Horizontal',
+      'Fouetté', 
+      'Front_Split_-_Trunk_Backward_-_Below_Horizontal'],
+    'Rotation': 
+      [
+      'GENERAL', 
+      'Ring_with_help', 
+      'Spiral_turn', 
+      'Side_Split_-_Trunk_Horizontal', 
+      'Back_Split_-_Trunk_Horizontal', 
+      'Fouetté', 
+      'Back_Split', 
+      'Attitude'
+      ], 
+      'Jump': [
+        'Turning_Split_Leap', 
+        'Stag_Leap', 
+        'Turning_Stag_Leap', 
+        'Split_Leap'
+        ]
+      }
+
+  label_dict:
+    Balance: 0
+    Jump: 1
+    Rotation: 2
+    Other: 3
+  lr: 0.001 
+  model_folder: data/models/models_movement_classification/ActionHeadClassification
+  num_workers: 4
+  patience: 10
+  pretrained: false
+  pretrained_model_path: "data/models/models_movement_classification/ActionHeadClassification/2025-08-15_12-37-10/best_model.pth"
+  seed: 42
+  shuffle: true
+  test_folder: ''
+  train_folder: ''
+  val_folder: ''
+embeddings_config:
+  debug_plot_first_frame: false
+  deroot: true
+
+  do_padding: false #true
+  do_extract_middle_n_frames: false
+
+  frames_step: 1
+  get_3d_keypoints: false
+  get_frame_keypoints: last
+  keypoints_input_config:
+    base_dir: data/extracted/keypoints/kps
+    categories:
+    - Balance
+    - Jump
+    - Rotation
+    - Other
+    set_patterns:
+      test: test_set_*.pkl
+      train: train_set_*.pkl
+      val: val_set_*.pkl
+  middle_n_frames: 25
+  model_path: data/models/models_3d/motionbert/latest_epoch_full_model.bin #best_epoch.bin
+  n_frames_after: 0 #30
+  n_frames_before: 25 #30
+  normalize_derooting: true
+  output_folder_name: ''
+  visibility_threshold: 0
+extract_keypoints_config:
+  add_N_frames_before: 0
+  annotated_videos_dir: data/extracted/annotated_videos
+  base_save_dir: data/extracted/keypoints
+  currently_plotting: false
+  filter_to_one_skeleton: biggest
+  filtered_subdirs:
+  - Balance
+  - Jump
+  - Rotation
+  - Other
+  force_recompute: true
+  keypoints_experiment_name: 'exp'
+  max_interpolation_gap: 15
+  
+  # model:
+  #   ckpt: data/models/models_2d/rtmo/end2end.onnx
+  #   input_size:
+  #   - 640
+  #   - 640
+  #   name: RTMO
+
+  # model:
+  #   ckpt: data/models/models_2d/yolo11/yolo11l-pose.onnx #data/models/models_2d/yolo11/yolo11n-pose.onnx 
+  #   input_size:
+  #   - 640
+  #   - 640
+  #   name: YOLO11
+
+  model:
+    name: BlazePose
+
+  random_scaling_factor_range:
+  - 1
+  - 1
+  random_state: 42
+  same_person_threshold: 200
+  set_names:
+  - train
+  - test
+  - val
+  test_size: 0.2
+  train_test_split: false
+  val_size: 0.2
+  videos_folders: 
+  - data/processed_videos/Annotatios Tokyo Q pack 1 2 and four of 5 padding 121 start 121 end
+  #- data/raw/videos/testing #/Jump
+filtering_config:
+  filtering_method: weighted_gaussian
+  filtering_window_size: 40
+  gaussian_sigma_factor: 3
+  minimum_frames_for_prediction: 10
+
+onnx_config:
+  input_model_path: data/ActionHeadClassification/action_head_classification.pth
+  n_classes: 11
+  output_onnx_path: data/ActionHeadClassification/onnx/action_cls_fixed_root-added_x-epochs_x_fp32.onnx
